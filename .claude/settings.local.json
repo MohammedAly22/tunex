@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(grep -r \"BREAKING\\\\|deprecated\\\\|Deprecat\\\\|breaking change\" /c/Users/m.aly/Downloads/TuneX-Claude/frontend/node_modules/next/dist/docs/01-app --include=*.md)",
+      "Bash(npx next:*)",
+      "mcp__Claude_Preview__preview_start",
+      "WebFetch(domain:www.llmfit.org)",
+      "WebFetch(domain:pypi.org)",
+      "Bash(python -c \"from backend.main import app; print\\(''Backend imports OK''\\)\")",
+      "Bash(python -c \":*)",
+      "Bash(git init:*)",
+      "Bash(git add:*)"
+    ]
+  }
+}

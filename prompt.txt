@@ -1,0 +1,123 @@
+You're a master Code writer, I need you to complete this production grade tool, the tool should be working without any errors.
+
+
+
+First, every agent must be connected to the actual LLM the user defined in the configuration. Second, the dataset agent must having a search tool that can search on datasets from Hugging Face and choose one is relevant.
+
+
+
+Important, there is no predefined code or configuration, all the code needs to be written using the agent. For example, I saw that in the code agent:
+
+```
+
+def _generate_training_script(self, state: AgentState) -> list[str]:
+
+        config = state.training_config
+
+        lora = state.lora_config
+
+        method = config.get("method", "lora")
+
+        model_id = config.get("model_id", state.model_id)
+
+        dataset_id = state.dataset_id
+
+
+
+        lines = [
+
+            '"""TuneX Generated Training Script"""',
+
+            "",
+
+            "import torch",
+
+            "from transformers import (",
+
+            "    AutoModelForCausalLM,",
+
+            "    AutoTokenizer,",
+
+            "    TrainingArguments,",
+
+            "    DataCollatorForSeq2Seq,",
+
+            ")",
+
+            "from trl import SFTTrainer",
+
+            "from datasets import load_dataset",
+
+        ]
+
+
+
+        if method in ("lora", "qlora"):
+
+            lines.append("from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training")
+
+
+
+        if method == "qlora":
+
+            lines.append("from transformers import BitsAndBytesConfig")
+
+
+
+        lines.extend([
+
+            "",
+
+            "# === Configuration ===",
+
+            f'MODEL_ID = "{model_id}"',
+
+            f'DATASET_ID = "{dataset_id}"',
+
+            f'OUTPUT_DIR = "./outputs/{state.experiment_id}"',
+
+            "",
+
+        ])
+
+```
+
+
+
+However, this is completly WRONG, this code needs to be written using the LLM it self, using the agent, the code will be generated as cool given the system prompt. Also, use pydantic for structured output not asking the LLM to output like that
+
+Output your analysis as JSON with this schema:
+
+{
+
+  "benchmarks": [{"name": "str", "base_score": float, "finetuned_score": float, "delta": float}],
+
+  "avg_improvement": float,
+
+  "regressions": int,
+
+  "summary": "Overall analysis and deployment recommendation"
+
+}
+
+
+
+---
+
+you need to create a specific pydantic schema and connect it to agent to ensure structured output. You must use Langchain with the LLM provider the user defined in the settings. This not a POC, this is the code of actual product.
+
+
+
+When the user sending a query like "fine tuning Qwen 3.5 model" it is being passed to the first intent agent, and adding this query to the prompt and sending it to the LLM, then based on the output, we determine the next steps, the LLM must output some follow up question and sending them to the user to ensure that the query is complete, like which version of Qwen 3.5, on which task, do you need a specific dataset or let the agent find a suitable one. Then after the user answering this question, prepare task pydantic structure containing these details.
+
+
+
+Then this output is being send to the planner agent to build the complete plan, like verifying user task, ensure that everything is working together, the dataset is compatible with the selected model, the model presist it self, etc.
+
+
+
+Again these needs to be a real LLM calls with PyDantic for structure output. Also, the code agent must write code files, code viwer must view this code being written and file explorer. The code the agent created must have creating a conda enviornment, a folder to put all the experiment files in it, being able to create the enviornment and starts training, the monitoring agent is alive to see if there any error in conda creation, etc. and analyzing any errors, and send it back to the code agent with some context to be able to solve it, then re-run the code, after that ensuring that everything looks natural.
+
+
+
+Again, this is actual product not a POC. So, make sure that the user is configuring the LLM first and refuse to continue until the API key or Ollama server is up and run0nning. 

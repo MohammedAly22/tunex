@@ -1,0 +1,27 @@
+fastapi==0.115.0
+uvicorn[standard]==0.30.6
+websockets==12.0
+pydantic==2.9.2
+pydantic-settings==2.5.2
+sqlalchemy==2.0.35
+aiosqlite==0.20.0
+httpx==0.27.2
+python-multipart==0.0.9
+# LangChain for structured LLM output
+langchain-core>=0.3.8
+langchain-openai>=0.2.1
+langchain-anthropic>=0.2.2
+langchain-cohere>=0.3.0
+langchain-ollama>=0.2.0
+# Training dependencies
+torch>=2.1.0
+transformers>=4.44.0
+datasets>=2.20.0
+peft>=0.12.0
+trl>=0.10.0
+bitsandbytes>=0.43.0
+accelerate>=0.33.0
+evaluate>=0.4.0
+huggingface-hub>=0.25.0
+psutil>=5.9.0
+gpustat>=1.1.0
